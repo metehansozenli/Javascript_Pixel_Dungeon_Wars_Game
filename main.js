@@ -30,6 +30,21 @@ addEventListener('load',function(){
         }
     }
 
+    class Projectiles{
+        constructor(destX,destY){
+            this.destX = destX;
+            this.destY = destY;
+            this.radius = 10;
+            this.color = 'red';
+        }
+        draw(){
+            ctx.beginPath();
+            ctx.arc(this.destX, this.destY, this.radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+    }
+
     class Player{
         constructor(game){
             this.game = game;
@@ -37,8 +52,9 @@ addEventListener('load',function(){
             this.height = 50;
             this.x = 200;
             this.y = 200;
-            this.speedX = 0;
-            this.speedY = 0;
+            this.velocityXL = 0;
+            this.velocityXR = 0;
+            this.velocityY = 0;
             this.maxSpeed = 3;
             
         }
@@ -64,11 +80,37 @@ addEventListener('load',function(){
     }
 
     class Enemy{
-        constructor(width,height,color){
-            this.width=width;
-            this.height=height;
-            this.color=color;
-        } 
+        constructor(game){
+            this.game = game;
+            this.player = game.player;
+            this.width = 50;
+            this.height = 100;
+            this.x = 600;
+            this.y = 200;
+            this.velocityXL = 0;
+            this.velocityXR = 0;
+            this.velocityY = 0;
+            this.maxSpeed = 1;
+        }
+        
+        draw(context){
+            context.fillRect(this.x,this.y,this.width,this.height);
+        }
+        
+        moveEnemy() {
+            if (this.x < this.player.x) {
+              this.x += this.maxSpeed;
+            } else if (this.x > this.game.player.x) {
+              this.x -= this.maxSpeed;
+            }
+            if (this.y < this.game.player.y) {
+              this.y += this.maxSpeed;
+            } else if (this.y > this.game.player.y) {
+              this.y -= this.maxSpeed;
+            }
+            else{}
+
+          } 
     }
     class Game{
         constructor(width, height){
@@ -77,10 +119,19 @@ addEventListener('load',function(){
             this.lastKey = undefined;
             this.control = new Controls(this);
             this.player = new Player(this);
+            this.enemy = new Enemy(this);
         }
         show(ctx){
             this.player.draw(ctx);
+            this.enemy.draw(ctx);
             this.player.update();
+            this.enemy.moveEnemy();
+            
+            // setInterval(() =>{
+            //     const Interval = setInterval(() => this.enemy.moveEnemy(), 1);
+            //     setTimeout(() =>{},5000);
+            //     clearInterval(Interval);
+            // },2000);
         }
     }
 
@@ -88,40 +139,17 @@ addEventListener('load',function(){
     function animate(){
         ctx.clearRect(0,0,canvas.width,canvas.height);
         game.show(ctx);
+        window.addEventListener('click',(event) => {
+            const projectile = new Projectiles(event.clientX,event.clientY);
+            projectile.draw();
+        });
         requestAnimationFrame(animate);
     }
     animate();
 
 });
 /*
-let x=100;
-let y=80;
-let vxl=0;
-let vxr=0;
-let vy=0;
-let playerWidth=25;
-let playerHeigth=25;
-let enemyWidth=25;
-let enemyHeigth=50;
-let enemyX=0;
-let enemyY=0;
-let playerVelocity=2;
-let enemyVelocity=1;
 
-class Player{
-    constructor(width,height,color){
-        this.width=width;
-        this.height=height;
-        this.color=color;
-    } 
-}
-class Enemy{
-    constructor(width,height,color){
-        this.width=width;
-        this.height=height;
-        this.color=color;
-    } 
-}
 
 function update(){
     ctx.clearRect(0,0,canvas.width, canvas.height);
@@ -134,22 +162,11 @@ function update(){
     ctx.fillStyle="blue";
     ctx.fillRect(x,y,playerWidth,playerHeigth);
     ctx.fillStyle="red";
-    ctx.fillRect(enemyX,enemyY,enemyWidth,enemyHeigth);
+    ctx.fillRect(this.x,this.y,enemyWidth,enemyHeigth);
     requestAnimationFrame(update);
 }
 
-function moveEnemy() {
-    if (enemyX < x) {
-      enemyX+=enemyVelocity;
-    } else if (enemyX > x) {
-      enemyX-=enemyVelocity;
-    }
-    if (enemyY < y) {
-      enemyY+=enemyVelocity;
-    } else if (enemyY > y) {
-      enemyY-=enemyVelocity;
-    }
-  }
+
 
 
 addEventListener("keydown",function(e){
