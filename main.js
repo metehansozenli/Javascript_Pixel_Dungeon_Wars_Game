@@ -85,6 +85,7 @@ addEventListener('load',function(){
     const game= new Game(canvas.width,canvas.height);
     function animate(){
         game.show(ctx);
+        game.update();
         requestAnimationFrame(animate);
     }
     
