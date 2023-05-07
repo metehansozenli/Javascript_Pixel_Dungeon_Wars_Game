@@ -7,8 +7,8 @@ addEventListener('load',function(){
     class Controls{
         constructor(game){
             this.game = game;
-            addEventListener("keydown",e => {
-                this.game.lastKey = 'P' + e.key;
+            window.addEventListener("keydown",e => {
+                this.game.lastKey = 'P' + e.key.toUpperCase();
                 /*switch(e.code){
                     case 'KeyD':
                         vxr=playerVelocity;  
@@ -24,8 +24,8 @@ addEventListener('load',function(){
                         break;
                 } */
             });
-            addEventListener('keyup',e => {
-                this.game.lastKey= 'R'+e.key;
+            window.addEventListener('keyup',e => {
+                this.game.lastKey= 'R'+e.key.toUpperCase();
             });
         }
     }
@@ -39,20 +39,21 @@ addEventListener('load',function(){
             this.y = 200;
             this.speedX = 0;
             this.speedY = 0;
+            this.maxSpeed = 3;
             
         }
-        draw(ctx){
-            ctx.fillRect(this.x,this.y,this.width,this.height);
+        draw(context){
+            context.fillRect(this.x,this.y,this.width,this.height);
         }
         update(){
             if (this.game.lastKey == 'PA')
-                this.speedX = -1;
+                this.speedX = -3; 
             else if (this.game.lastKey == 'PD')
-                this.speedX = 1;
+                this.speedX = 3;
             else if (this.game.lastKey == 'PW')
-                this.speedY = -1;
+                this.speedY = -3;
             else if (this.game.lastKey == 'PS')
-                this.speedY = 1;
+                this.speedY = 3;
             else {
                 this.speedX = 0;
                 this.speedY = 0;
@@ -70,25 +71,26 @@ addEventListener('load',function(){
         } 
     }
     class Game{
-        constructor(width,height){
-            this.width=width;
-            this.height=height;
-            this.lastKey=undefined;
-            this.control=new Controls(this);
+        constructor(width, height){
+            this.width = width;
+            this.height = height;
+            this.lastKey = undefined;
+            this.control = new Controls(this);
             this.player = new Player(this);
         }
         show(ctx){
             this.player.draw(ctx);
+            this.player.update();
         }
     }
 
     const game= new Game(canvas.width,canvas.height);
     function animate(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
         game.show(ctx);
-        game.update();
         requestAnimationFrame(animate);
     }
-    
+    animate();
 
 });
 /*
