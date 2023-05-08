@@ -4,47 +4,45 @@ addEventListener('load',function(){
     canvas.width = 1280;
     canvas.height = 720;
 
-    class Controls{
+    class Inputs{
         constructor(game){
             this.game = game;
             window.addEventListener("keydown",e => {
-                this.game.lastKey = 'P' + e.key.toUpperCase();
-                /*switch(e.code){
-                    case 'KeyD':
-                        vxr=playerVelocity;  
-                        break;
-                    case 'KeyA':
-                        vxl=-playerVelocity;
-                        break; 
-                    case 'KeyW':
-                        vy=-playerVelocity;
-                        break;
-                    case 'KeyS':
-                        vy=playerVelocity;
-                        break;
-                } */
+                this.game.lastKey = 'P' + e.code;
             });
             window.addEventListener('keyup',e => {
-                this.game.lastKey= 'R'+e.key.toUpperCase();
+                this.game.lastKey= 'R'+ e.code;
+            });
+            canvas.addEventListener('click',(event) => {
+                const rect = canvas.getBoundingClientRect();
+                const projectile = new Projectiles(this.game,this.game.player.x,this.game.player.y,event.clientX - rect.left, event.clientY - rect.top);
             });
         }
     }
 
     class Projectiles{
-        constructor(destX,destY){
+        constructor(game,x,y,destX,destY){
+            this.game = game;
+            this.x = x;
+            this.y = y;
             this.destX = destX;
             this.destY = destY;
             this.radius = 10;
             this.color = 'red';
+            this.velocity = 1;
         }
-        draw(){
-            ctx.beginPath();
-            ctx.arc(this.destX, this.destY, this.radius, 0, 2 * Math.PI, false);
-            ctx.fillStyle = this.color;
-            ctx.fill();
+        draw(context){
+            context.beginPath();
+            context.arc(this.destX, this.destY, this.radius, 0, 2 * Math.PI, false);
+            context.fillStyle = this.color;
+            context.fill();
+        }
+        update(){
+            this.x = this.x + this.velocity;
+            this.y = this.y + this.velocity;
         }
     }
-
+    
     class Player{
         constructor(game){
             this.game = game;
@@ -62,20 +60,27 @@ addEventListener('load',function(){
             context.fillRect(this.x,this.y,this.width,this.height);
         }
         update(){
-            if (this.game.lastKey == 'PA')
-                this.speedX = -3; 
-            else if (this.game.lastKey == 'PD')
-                this.speedX = 3;
-            else if (this.game.lastKey == 'PW')
-                this.speedY = -3;
-            else if (this.game.lastKey == 'PS')
-                this.speedY = 3;
-            else {
-                this.speedX = 0;
-                this.speedY = 0;
-            }
-            this.x += this.speedX;
-            this.y += this.speedY;
+            console.log(this.game.lastKey);
+            if(this.game.lastKey == 'PKeyD')
+                this.velocityXR = this.maxSpeed;
+            else if(this.game.lastKey == 'PKeyA')
+                this.velocityXL = -this.maxSpeed;
+            else if(this.game.lastKey == 'PKeyW')
+                this.velocityY = -this.maxSpeed;
+            else if(this.game.lastKey == 'PKeyS')
+                this.velocityY = this.maxSpeed;
+            else if(this.game.lastKey == 'RKeyD')
+                this.velocityXR=0;
+            else if(this.game.lastKey == 'RKeyA')
+                this.velocityXL=0;
+            else if(this.game.lastKey == 'RKeyW')
+                this.velocityY=0;
+            else if(this.game.lastKey == 'RKeyS')
+                this.velocityY=0;
+            
+            this.x += this.velocityXR;
+            this.x += this.velocityXL;
+            this.y += this.velocityY;
         }
     }
 
@@ -117,7 +122,7 @@ addEventListener('load',function(){
             this.width = width;
             this.height = height;
             this.lastKey = undefined;
-            this.control = new Controls(this);
+            this.inputs = new Inputs(this);
             this.player = new Player(this);
             this.enemy = new Enemy(this);
         }
@@ -136,13 +141,10 @@ addEventListener('load',function(){
     }
 
     const game= new Game(canvas.width,canvas.height);
+    
     function animate(){
         ctx.clearRect(0,0,canvas.width,canvas.height);
         game.show(ctx);
-        window.addEventListener('click',(event) => {
-            const projectile = new Projectiles(event.clientX,event.clientY);
-            projectile.draw();
-        });
         requestAnimationFrame(animate);
     }
     animate();
@@ -172,16 +174,16 @@ function update(){
 addEventListener("keydown",function(e){
     switch(e.code){
         case 'KeyD':
-            vxr=playerVelocity;  
+            vxr=maxSpeed;  
             break;
         case 'KeyA':
-            vxl=-playerVelocity;
+            vxl=-maxSpeed;
             break; 
         case 'KeyW':
-            vy=-playerVelocity;
+            vy=-maxSpeed;
             break;
         case 'KeyS':
-            vy=playerVelocity;
+            vy=maxSpeed;
             break;
     } 
 });
