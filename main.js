@@ -15,7 +15,11 @@ addEventListener('load',function(){
             });
             canvas.addEventListener('click',(event) => {
                 const rect = canvas.getBoundingClientRect();
-                const projectile = new Projectiles(this.game,this.game.player.x,this.game.player.y,event.clientX - rect.left, event.clientY - rect.top);
+                if (this.game.ammo>0){
+                    const angle = Math.atan2( (event.clientY - rect.top) - this.game.player.y, (event.clientX - rect.left) - this.game.player.x)
+                    this.game.player.projectiles.push(new Projectiles(this.game, this.game.player.x, this.game.player.y, Math.cos(angle), Math.sin(angle)));
+                    this.game.ammo--;
+                }
             });
         }
     }
@@ -28,19 +32,20 @@ addEventListener('load',function(){
             this.destX = destX;
             this.destY = destY;
             this.radius = 10;
-            this.color = 'red';
-            this.velocity = 1;
+            this.color = 'yellow';
+            this.velocity = 5;
+        }
+        update(){
+            this.x += this.destX * this.velocity;
+            this.y += this.destY * this.velocity;
         }
         draw(context){
             context.beginPath();
-            context.arc(this.destX, this.destY, this.radius, 0, 2 * Math.PI, false);
+            context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
             context.fillStyle = this.color;
             context.fill();
         }
-        update(){
-            this.x = this.x + this.velocity;
-            this.y = this.y + this.velocity;
-        }
+        
     }
     
     class Player{
@@ -54,13 +59,17 @@ addEventListener('load',function(){
             this.velocityXR = 0;
             this.velocityY = 0;
             this.maxSpeed = 3;
+            this.projectiles = [];
             
         }
         draw(context){
+            context.fillStyle = 'blue';
             context.fillRect(this.x,this.y,this.width,this.height);
+            this.projectiles.forEach(projectile => {
+                projectile.draw(context);
+            });
         }
         update(){
-            console.log(this.game.lastKey);
             if(this.game.lastKey == 'PKeyD')
                 this.velocityXR = this.maxSpeed;
             else if(this.game.lastKey == 'PKeyA')
@@ -81,6 +90,13 @@ addEventListener('load',function(){
             this.x += this.velocityXR;
             this.x += this.velocityXL;
             this.y += this.velocityY;
+
+            this.projectiles.forEach(projectile => {
+                projectile.update();
+            });
+        }
+        shoot(){
+
         }
     }
 
@@ -99,6 +115,7 @@ addEventListener('load',function(){
         }
         
         draw(context){
+            context.fillStyle = 'red';
             context.fillRect(this.x,this.y,this.width,this.height);
         }
         
@@ -122,21 +139,25 @@ addEventListener('load',function(){
             this.width = width;
             this.height = height;
             this.lastKey = undefined;
+            this.ammo = 5;
+            this.maxAmmo = 5;
             this.inputs = new Inputs(this);
             this.player = new Player(this);
             this.enemy = new Enemy(this);
+        }
+        update(){
+            setTimeout(() => {
+                if(this.ammo < this.maxAmmo){
+                    this.ammo++;
+                }
+                this.update(); // Metodu kendisi ile tekrar çağırarak, 2 saniye sonra tekrar çalışmasını sağlar.
+            }, 2000);
         }
         show(ctx){
             this.player.draw(ctx);
             this.enemy.draw(ctx);
             this.player.update();
-            this.enemy.moveEnemy();
-            
-            // setInterval(() =>{
-            //     const Interval = setInterval(() => this.enemy.moveEnemy(), 1);
-            //     setTimeout(() =>{},5000);
-            //     clearInterval(Interval);
-            // },2000);
+            this.enemy.moveEnemy(); 
         }
     }
 
@@ -144,6 +165,7 @@ addEventListener('load',function(){
     
     function animate(){
         ctx.clearRect(0,0,canvas.width,canvas.height);
+        game.update();
         game.show(ctx);
         requestAnimationFrame(animate);
     }
