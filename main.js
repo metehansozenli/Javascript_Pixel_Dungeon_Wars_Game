@@ -57,12 +57,12 @@ class Projectiles{
         this.radius = radius;
         this.color = color;
         this.velocity = 5;
-        this.markedForDeletion = false;
+        this.deletionStatus = false;
     }
     update(){
         this.x += this.destX * this.velocity;
         this.y += this.destY * this.velocity;
-        if(this.x > this.game.width-30 || this.y > this.game.height-30 || this.x < 30 || this.y < 30) this.markedForDeletion = true;
+        if(this.x > this.game.width-30 || this.y > this.game.height-30 || this.x < 30 || this.y < 30) this.deletionStatus = true;
     }
     draw(context){
         context.beginPath();
@@ -117,7 +117,7 @@ class Player extends SpriteSheet{
         this.projectiles.forEach(projectile => {
             projectile.update();
         });
-        this.projectiles = this.projectiles.filter(projectile => !projectile.markedForDeletion); 
+        this.projectiles = this.projectiles.filter(projectile => !projectile.deletionStatus); 
     }
     shoot(event){
         this.event = event;
@@ -157,14 +157,18 @@ class Enemy extends SpriteSheet{
         if (this.x < this.player.x) {
             this.x += this.maxSpeed;
             this.frameY=0;
-        } else if (this.x > this.game.player.x) {
+        } 
+        else if (this.x > this.game.player.x) {
             this.x -= this.maxSpeed;
             this.frameY=1;
         }
         if (this.y < this.game.player.y) {
             this.y += this.maxSpeed;
-        } else if (this.y > this.game.player.y) {
+            this.frameY=2;
+        } 
+        else if (this.y > this.game.player.y) {
             this.y -= this.maxSpeed;
+            this.frameY=3;
         }
         else{}
         //X ekseninde sinirlama
@@ -182,7 +186,7 @@ class Enemy extends SpriteSheet{
         this.projectiles2.forEach(projectile => {
             projectile.update();
         });
-        this.projectiles2 = this.projectiles2.filter(projectile => !projectile.markedForDeletion);
+        this.projectiles2 = this.projectiles2.filter(projectile => !projectile.deletionStatus);
     }
     
 }
@@ -194,7 +198,7 @@ class Rats{
         this.x = x;
         this.y = y;
         this.maxSpeed = 1.5;
-        this.health = 1;
+        this.deletionStatus = false;
 
     }
     draw(context){
@@ -251,6 +255,12 @@ class Game{
         this.rats.forEach(rat => {
             rat.update();
         });
+        this.rats = this.rats.filter(rat => !rat.deletionStatus);
+
+        var possibilty = Math.random();  
+        if(possibilty < 0.001)
+            this.spawnRats();
+        
         //Sprite sheet uzerinde belirli araliklarla gezinme
         if(this.spriteTimer > this.spriteInterval){
             if(this.enemy.frameX < this.enemy.maxFrame){
@@ -263,7 +273,6 @@ class Game{
         }
         else
             this.spriteTimer += deltaTime;
-        
 
         /*Dusmanin belirli araliklarla ates etmesi (her seferinde farkli araliklarla
                     ateslemek icin random kullanilmistir.)*/
@@ -300,19 +309,29 @@ class Game{
         this.player.projectiles.forEach(projectile => {
             if(this.checkHit(projectile,this.enemy)){
                 this.enemy.health--;
-                projectile.markedForDeletion = true;
+                projectile.deletionStatus = true;
             }
         });
         this.enemy.projectiles2.forEach(projectile => {
             if(this.checkHit(projectile,this.player)){
                 this.player.health--;
-                projectile.markedForDeletion = true;
+                projectile.deletionStatus = true;
             }
         });
+        this.player.projectiles.forEach(projectile => {
+            this.rats.forEach(rat => {
+                if(this.checkHit(projectile,rat)){
+                    rat.deletionStatus = true;
+                    projectile.deletionStatus = true;
+                }
+            })
+            
+        });
+        this.rats.forEach(rat => {
+            if(this.checkHit(rat,this.player))
+                this.player.health--;
+        });
         
-        var possibilty = Math.random();  
-        if(possibilty < 0.001)
-            this.spawnRats();
     }
     show(ctx){
         this.player.draw(ctx);
