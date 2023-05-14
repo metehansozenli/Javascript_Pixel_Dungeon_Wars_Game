@@ -1,4 +1,3 @@
-
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext("2d");
 canvas.width = 1280;
@@ -37,12 +36,12 @@ class Inputs{
 }
 
 class SpriteSheet{
-    constructor(Id){
+    constructor(Id,spriteWidth,spriteHeight,maxFrame){
         this.frameX = 0;
         this.frameY = 0;
-        this.maxFrame = 8;
-        this.spriteWidth = 78;
-        this.spriteHeight = 78;
+        this.maxFrame = maxFrame;
+        this.spriteWidth = spriteWidth;
+        this.spriteHeight = spriteHeight;
         this.image = document.getElementById(Id);
     }
 }
@@ -74,7 +73,7 @@ class Projectiles{
 
 class Player extends SpriteSheet{
     constructor(game){
-        super('player');
+        super('player',78,78,8);
         this.game = game;
         this.width = 50;
         this.height = 50;
@@ -85,8 +84,7 @@ class Player extends SpriteSheet{
         this.velocityY = 0;
         this.maxSpeed = 3;
         this.health = 10;
-        this.projectiles = [];
-        
+        this.projectiles = [];   
     }
     draw(context){
         //const playerImg = new Image(); 
@@ -132,11 +130,13 @@ class Player extends SpriteSheet{
 
 class Enemy extends SpriteSheet{
     constructor(game){
-        super('enemy');          
+        super('enemy',78,78,8);          
         this.game = game; 
         this.player = game.player;
         this.x = 600;
         this.y = 200;
+        this.spriteHeight = 78;
+        this.spriteWidth = 78;
         this.width = this.spriteWidth;
         this.height = this.spriteHeight;
         this.maxSpeed = 1;
@@ -191,18 +191,20 @@ class Enemy extends SpriteSheet{
     
 }
 
-class Rats{
+class Rats extends SpriteSheet{
     constructor(game,x,y){
+        super('rats',50,25,4);
         this.game = game;
         this.player = this.game.player;
+        this.height = this.spriteHeight;
+        this.width = this.spriteWidth;
         this.x = x;
         this.y = y;
         this.maxSpeed = 1.5;
         this.deletionStatus = false;
-
     }
     draw(context){
-        context.fillRect(this.x,this.y,50,23);
+        context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,this.spriteHeight,this.x,this.y,this.width, this.height);
     }
     update() {
         if (this.x < this.player.x) {
@@ -227,6 +229,25 @@ class Rats{
     } 
 }
 
+class Spikes {
+    constructor(game){
+        this.game = game;
+        this.height = 50;
+        this.width = 50 ;
+        this.x = Math.random() * this.game.width - this.width;
+        this.y = Math.random() * this.game.height + this.height;
+        this.x = (this.x < 55)? 58 : (this.x > this.game.width - this.width - 55)? this.game.width - this.width - 58 : this.x;
+        this.y = (this.y < 185)? 185 : (this.y > this.game.height - this.height - 55)? this.game.height - this.height - 58 : this.y;
+        this.damage = 0.1; 
+
+    }
+    draw(context){
+        context.fillStyle = "gray";
+        context.fillRect(this.x,this.y,50,50);
+    }
+
+}
+
 class Game{
     constructor(width, height){
         this.width = width;
@@ -248,6 +269,8 @@ class Game{
         this.inputs = new Inputs(this);
         this.enemy = new Enemy(this);
         this.rats = [];
+        this.spikes = [];
+        this.spikeCount = Math.random()*4 + 1;
     }
     update(deltaTime){
         this.player.update();
@@ -266,9 +289,21 @@ class Game{
             if(this.enemy.frameX < this.enemy.maxFrame){
                 this.enemy.frameX++;
                 this.player.frameX++;
+                this.rats.forEach(rat => {
+                    rat.frameX++;
+                });
             }
             if(this.enemy.frameX == this.enemy.maxFrame)
                 this.enemy.frameX = 0;
+
+            if(this.player.frameX == this.player.maxFrame)
+                this.player.frameX = 0;
+
+            this.rats.forEach(rat => {
+                if(rat.frameX == rat.maxFrame)
+                    rat.frameX = 0;
+            });
+            
             this.spriteTimer = 0;           
         }
         else
@@ -305,7 +340,7 @@ class Game{
         }
         else
             this.ammoTimer += deltaTime;
-
+        // Cesitli kosullarda carpisma tesbit etme 
         this.player.projectiles.forEach(projectile => {
             if(this.checkHit(projectile,this.enemy)){
                 this.enemy.health--;
@@ -339,6 +374,9 @@ class Game{
         this.rats.forEach(rat => {
             rat.draw(ctx);
         });
+        this.spikes.forEach(spike => {
+            spike.draw(ctx);
+        });
     }
     checkHit(projectile,aim){
         //Merminin merkez noktasinin dusman uzerindeki en kisa noktasini bulma 
@@ -355,10 +393,14 @@ class Game{
     spawnRats(){
         this.rats.push(new Rats(this,Math.random()*1100,Math.random()*600-this.topMargin));
     }
-    
+    spawnSpikes(){
+        for(let i=0 ; i<=this.spikeCount ; i++)
+            this.spikes.push(new Spikes(this));     
+    }
 }
 function startGame(){
-    const game= new Game(canvas.width,canvas.height);
+    const game = new Game(canvas.width,canvas.height);
+    game.spawnSpikes();
     lastTime = 0;
     function animate(timeStamp){
         //if(game.enemy.health > 0 && game.player.health > 0){// Oyun devam etme kosulu
@@ -372,4 +414,3 @@ function startGame(){
     }
     animate(0);
 }
-
