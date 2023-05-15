@@ -1,7 +1,7 @@
 
 # Pixel Dungeon Wars
 
-Javascript dili ve yanında HTML- CSS kullanılarak nesneye yönemli programlama tekniğiyle kodlanmış pixel tarzda top-down oyundur.
+Javascript dili ve yanında HTML- CSS kullanılarak nesneye yönemli programlamaya uygun olarak kodlanmış pixel tarzda top-down oyundur.
 Şuanlık birkaç bug bulunmaktadır, ilerleyen zamanlarda düzeltilecek olup yeni bölümler de eklenecektir.
  
 # Nasıl oynanılır ve amacı nedir ?
