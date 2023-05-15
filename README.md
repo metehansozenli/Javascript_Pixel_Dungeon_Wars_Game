@@ -12,12 +12,21 @@ Pixel Dungeon Wars oyunu :
 
 Not: Düşmanlarla savaşırken zemindeki dikenlere uzak durmayı unutmayın.
 
-# Oyun ici görseller                      
+# Oyun ici görseller
+Oyun içerisindeki Sıçan, Ana karakter, Boss ve oyun içi assetlerin çizimlerini ve animasyonlarını photoshop kullanarak hazırladım
+Oyun içi mekan tasarmı arkadaşım Hilmi Difyeli tarafından hazırlanmıştır.
+
 ![prew](https://github.com/metehansozenli/Javascript_Game/blob/main/prew.png)
 
 ![prew1](https://github.com/metehansozenli/Javascript_Game/blob/main/prew2.png)
 
 # Karakterler
+  https://github.com/metehansozenli/Javascript_Game/blob/main/boss.png
+  
+  https://github.com/metehansozenli/Javascript_Game/blob/main/player.png
+  
+  https://github.com/metehansozenli/Javascript_Game/blob/main/rat.png
+  
   
 # Oyuna Linki.
 
