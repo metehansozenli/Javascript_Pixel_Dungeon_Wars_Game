@@ -31,3 +31,5 @@ Oyun içi mekan tasarmı arkadaşım Hilmi Difyeli tarafından hazırlanmıştı
 # Oyun Linki ve Oynanış videosu
 
 http://pixeldungeonwars.eu5.org
+
+https://youtu.be/ueuCdj6UTDw
