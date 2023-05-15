@@ -24,10 +24,13 @@ Oyun içi mekan tasarmı arkadaşım Hilmi Difyeli tarafından hazırlanmıştı
 ![prew2](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/prev3.png)
 
 # Karakterler
+- Boss
 ![boss](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/boss.png)
-  
+
+- Oyuncu
 ![player](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/player.png)
-  
+
+- Fare
 ![rat](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/rat.png)
   
   
