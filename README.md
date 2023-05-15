@@ -19,7 +19,7 @@ Oyun içi mekan tasarmı arkadaşım Hilmi Difyeli tarafından hazırlanmıştı
 
 ![prew](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/prew.png)
 
-![prew1](https://github.com/metehansozenliJavascript_Pixel_Dungeon_Wars_Game/blob/main/prew2.png)
+![prew1](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/prew2.png)
 
 ![prew2](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/prev3.png)
 
@@ -28,7 +28,7 @@ Oyun içi mekan tasarmı arkadaşım Hilmi Difyeli tarafından hazırlanmıştı
   
 ![player](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/player.png)
   
-![rat](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/rat.png)
+![rat](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/boss.png)
   
   
 # Oyun Linki ve Oynanış videosu
