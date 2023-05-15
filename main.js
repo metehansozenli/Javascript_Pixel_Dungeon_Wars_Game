@@ -105,7 +105,7 @@ class Player extends SpriteSheet{
     }
     update(){
         
-        //oyunca hareketi
+        //oyuncu hareketi
         this.x += this.velocityXR;
         this.x += this.velocityXL;
         this.y += this.velocityY;
@@ -120,7 +120,7 @@ class Player extends SpriteSheet{
         this.projectiles.forEach(projectile => {
             projectile.update();
         });
-        this.projectiles = this.projectiles.filter(projectile => !projectile.deletionStatus); 
+        this.projectiles = this.projectiles.filter(projectile => !projectile.deletionStatus); // silinecek mermi varsa silinmesi saglaniyor
     }
     shoot(event){
         this.event = event;
