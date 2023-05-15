@@ -2,17 +2,27 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>My First Game</title>
+        <title>Pixel Dungeoun Wars</title>
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
         
-        <button id="startButton" onclick="startGame()">Click me</button>
         <canvas id="canvas1"></canvas>
-        
-        <img src="wizard.png" id="enemy">
-        <img src="rats_spriteSheet.png" id="rats">
+        <img src="wizard_spriteSheet2x.png" id="enemy">
+        <img src="rats_spriteSheet3.png" id="rats">
+        <img src="spikes.png" id="spikes">
         <!-- <img src="player_spriteSheet.png" id="player"> -->
+        <div id="mainMenu">
+            <div class="menuButton" id="button1" onclick="howToPlay()"><p>Nasıl Oynanır?</p></div>
+            <div class="menuButton" id="button2" onclick="startGame()"><p>Oyunu Başlat</p></div>
+        </div>
+        <div id="howToPlay">
+            <div class="backButton" id="button3" onclick="backToMenu()"><p>==</p></div>
+        </div>
+        <div id="gameEnd">
+            <div class="menuButton" id="button4"><p>İlerle(Çok yakında..)</p></div>
+            <div class="menuButton" id="button5" onclick="window.location.reload(false)"><p>Tekrar Oyna</p></div>
+        </div>
         <script src="main.js"></script>
     </body>
     
