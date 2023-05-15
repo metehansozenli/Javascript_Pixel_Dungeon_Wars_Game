@@ -28,6 +28,6 @@ Oyun içi mekan tasarmı arkadaşım Hilmi Difyeli tarafından hazırlanmıştı
 ![rat](https://github.com/metehansozenli/Javascript_Game/blob/main/rat.png)
   
   
-# Oyuna Linki.
+# Oyun Linki ve Oynanış videosu
 
 http://pixeldungeonwars.eu5.org
