@@ -14,7 +14,7 @@ Pixel Dungeon Wars oyunu :
 
 Not: Düşmanlarla savaşırken zemindeki dikenlere uzak durmayı unutmayın.
 
-# Oyun ici görseller
+# Oyun içi görseller
 Oyun içerisindeki Sıçan, Ana karakter, Boss ve oyun içi assetlerin çizimlerini ve animasyonlarını photoshop kullanarak kendim hazırladım
 Oyun içi mekan tasarmı arkadaşım Hilmi Difyeli tarafından hazırlanmıştır.
 
