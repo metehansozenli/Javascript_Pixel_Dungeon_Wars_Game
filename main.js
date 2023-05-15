@@ -94,7 +94,7 @@ class Player extends SpriteSheet{
         context.fillRect(this.x,this.y,this.width,this.height);
         context.fillStyle = "Blue";
         context.font = "50px Arial";
-        context.fillText(this.health,this.x+25,this.y);
+        context.fillText(this.health.toFixed(1),this.x+25,this.y);
         this.projectiles.forEach(projectile => {
             projectile.draw(context);
         });
@@ -193,39 +193,45 @@ class Enemy extends SpriteSheet{
 
 class Rats extends SpriteSheet{
     constructor(game,x,y){
-        super('rats',50,25,4);
+        super('rats',50,40,4);
         this.game = game;
         this.player = this.game.player;
-        this.height = this.spriteHeight;
-        this.width = this.spriteWidth;
         this.x = x;
         this.y = y;
-        this.maxSpeed = 1.5;
+        this.velocityX = 0;
+        this.velocityY = 0;
+        this.spriteHeight = 40;
+        this.spriteWidth = 50;
+        this.width = this.spriteWidth;
+        this.height = this.spriteHeight;
+        this.maxSpeed = 2;
         this.deletionStatus = false;
     }
     draw(context){
+        console.log(this.x);
         context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,this.spriteHeight,this.x,this.y,this.width, this.height);
     }
     update() {
         if (this.x < this.player.x) {
             this.x += this.maxSpeed;
             this.frameY=0;
-        } else if (this.x > this.game.player.x) {
+        } 
+        else if (this.x > this.game.player.x) {
             this.x -= this.maxSpeed;
             this.frameY=1;
         }
         if (this.y < this.game.player.y) {
             this.y += this.maxSpeed;
-        } else if (this.y > this.game.player.y) {
+            this.frameY=2;
+        } 
+        else if (this.y > this.game.player.y) {
             this.y -= this.maxSpeed;
+            this.frameY=3;
         }
-        else{}
-        //X ekseninde sinirlama
-        if(this.x < 55) this.x = 55;
-        else if((this.x + 55) > this.game.width - this.width) this.x = this.game.width - this.width - 55;
-        //Y ekseninde sinirlama
-        if(this.y < this.game.topMargin) this.y = this.game.topMargin;
-        else if((this.y + 50)> this.game.height - this.height) this.y = this.game.height - this.height - 50;
+        if(this.y == this.game.player.y){
+            this.y += 0;
+        }
+        
     } 
 }
 
@@ -234,16 +240,16 @@ class Spikes {
         this.game = game;
         this.height = 50;
         this.width = 50 ;
+        this.image = new Image();
+        this.image = document.getElementById('spikes');
         this.x = Math.random() * this.game.width - this.width;
         this.y = Math.random() * this.game.height + this.height;
         this.x = (this.x < 55)? 58 : (this.x > this.game.width - this.width - 55)? this.game.width - this.width - 58 : this.x;
         this.y = (this.y < 185)? 185 : (this.y > this.game.height - this.height - 55)? this.game.height - this.height - 58 : this.y;
-        this.damage = 0.1; 
-
+        this.damage = 0.1;
     }
     draw(context){
-        context.fillStyle = "gray";
-        context.fillRect(this.x,this.y,50,50);
+        context.drawImage(this.image,this.x,this.y,50,50);
     }
 
 }
@@ -253,7 +259,6 @@ class Game{
         this.width = width;
         this.height = height;
         this.topMargin=105;
-        this.lastKey = undefined;
         this.ammo = 20;
         this.maxAmmo = 20;
         this.ammoTimer = 0;// mermi reload etme sure sayaci
@@ -281,9 +286,9 @@ class Game{
         this.rats = this.rats.filter(rat => !rat.deletionStatus);
 
         var possibilty = Math.random();  
-        if(possibilty < 0.001)
+        if(possibilty < 0.001){
             this.spawnRats();
-        
+        }
         //Sprite sheet uzerinde belirli araliklarla gezinme
         if(this.spriteTimer > this.spriteInterval){
             if(this.enemy.frameX < this.enemy.maxFrame){
@@ -366,6 +371,14 @@ class Game{
             if(this.checkHit(rat,this.player))
                 this.player.health--;
         });
+        this.rats.forEach(rat => {
+            if(this.checkCollision(this.player,rat))
+                this.player.health-=0.005;
+        });
+        this.spikes.forEach(spike => {
+            if(this.checkCollision(this.player,spike))
+                this.player.health-=0.01;
+        });
         
     }
     show(ctx){
@@ -377,6 +390,17 @@ class Game{
         this.spikes.forEach(spike => {
             spike.draw(ctx);
         });
+    }
+    checkCollision(player,enemy){
+        //carpisma kosullari
+        if (player.x < enemy.x + enemy.width &&
+            player.x + enemy.width > enemy.x &&
+            player.y < enemy.y + enemy.height &&
+            player.y + player.height > enemy.y) {
+            return true;
+        }
+        // Carpisma yoksa
+        return false;
     }
     checkHit(projectile,aim){
         //Merminin merkez noktasinin dusman uzerindeki en kisa noktasini bulma 
@@ -391,26 +415,56 @@ class Game{
             return (false); 
     }
     spawnRats(){
-        this.rats.push(new Rats(this,Math.random()*1100,Math.random()*600-this.topMargin));
+        this.rats.push(new Rats(this,Math.random()*1100,Math.random()*600-120));
     }
     spawnSpikes(){
         for(let i=0 ; i<=this.spikeCount ; i++)
             this.spikes.push(new Spikes(this));     
     }
 }
+var div;
 function startGame(){
+    div = document.getElementById("mainMenu");
+    div.style.display= "none";
     const game = new Game(canvas.width,canvas.height);
     game.spawnSpikes();
     lastTime = 0;
+    
     function animate(timeStamp){
-        //if(game.enemy.health > 0 && game.player.health > 0){// Oyun devam etme kosulu
+        if(game.enemy.health <= 0){
+           gameEnd("player");
+        }
+        else if(game.player.health <= 0){
+            gameEnd("enemy");
+        }
+        else{// Oyun devam etme kosulu
             const deltaTime = timeStamp - lastTime;// bir onceki kare ile zaman farki
             lastTime = timeStamp;
             ctx.clearRect(0,0,canvas.width,canvas.height);
             game.update(deltaTime);
             game.show(ctx);
             requestAnimationFrame(animate);
-        //}
+        }
     }
     animate(0);
+}
+function howToPlay(){
+    div = document.getElementById("howToPlay");
+    div.style.display = "flex";
+}
+function backToMenu(){
+    div = document.getElementById("howToPlay");
+    div.style.display = "none";
+}
+function gameEnd(winner){
+    div = document.getElementById("gameEnd");
+    div.style.display = "flex";
+    if(winner == "player"){
+        div.style.background = "url('winScreen.gif')";
+        div.style.backgroundSize = "cover";
+    }
+    else if (winner == "enemy"){
+        div.style.background = "url('deadScreen.gif')";
+        div.style.backgroundSize = "cover";
+    }
 }
