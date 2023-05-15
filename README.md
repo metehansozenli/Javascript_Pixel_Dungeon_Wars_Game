@@ -21,11 +21,11 @@ Oyun içi mekan tasarmı arkadaşım Hilmi Difyeli tarafından hazırlanmıştı
 ![prew1](https://github.com/metehansozenli/Javascript_Game/blob/main/prew2.png)
 
 # Karakterler
-  https://github.com/metehansozenli/Javascript_Game/blob/main/boss.png
+![boss](https://github.com/metehansozenli/Javascript_Game/blob/main/boss.png)
   
-  https://github.com/metehansozenli/Javascript_Game/blob/main/player.png
+![player](https://github.com/metehansozenli/Javascript_Game/blob/main/player.png)
   
-  https://github.com/metehansozenli/Javascript_Game/blob/main/rat.png
+![rat](https://github.com/metehansozenli/Javascript_Game/blob/main/rat.png)
   
   
 # Oyuna Linki.
