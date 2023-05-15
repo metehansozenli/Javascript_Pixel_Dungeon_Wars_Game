@@ -1,7 +1,7 @@
 
 # Pixel Dungeon Wars
 
-Javascript dili ve yanında HTML- CSS kullanılarak yapılmış bir top-down oyundur.
+Javascript dili ve yanında HTML- CSS kullanılarak yapılmış pixel tarzda top-down oyundur.
  
 # Nasıl oynanılır ve amacı nedir ?
   
