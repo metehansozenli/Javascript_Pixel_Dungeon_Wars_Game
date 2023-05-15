@@ -12,9 +12,12 @@ Pixel Dungeon Wars oyunu :
 
 Not: Düşmanlarla savaşırken zemindeki dikenlere uzak durmayı unutmayın.
 
-#Oyun ici görseller                      
+# Oyun ici görseller                      
 ![prew](https://github.com/metehansozenli/Javascript_Game/blob/main/prew.png)
+
 ![prew1](https://github.com/metehansozenli/Javascript_Game/blob/main/prew2.png)
+
+# Karakterler
   
 # Oyuna Linki.
 
