@@ -14,19 +14,21 @@ Pixel Dungeon Wars oyunu :
 Not: Düşmanlarla savaşırken zemindeki dikenlere uzak durmayı unutmayın.
 
 # Oyun ici görseller
-Oyun içerisindeki Sıçan, Ana karakter, Boss ve oyun içi assetlerin çizimlerini ve animasyonlarını photoshop kullanarak hazırladım
+Oyun içerisindeki Sıçan, Ana karakter, Boss ve oyun içi assetlerin çizimlerini ve animasyonlarını photoshop kullanarak kendim hazırladım
 Oyun içi mekan tasarmı arkadaşım Hilmi Difyeli tarafından hazırlanmıştır.
 
-![prew](https://github.com/metehansozenli/Javascript_Game/blob/main/prew.png)
+![prew](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/prew.png)
 
-![prew1](https://github.com/metehansozenli/Javascript_Game/blob/main/prew2.png)
+![prew1](https://github.com/metehansozenliJavascript_Pixel_Dungeon_Wars_Game/blob/main/prew2.png)
+
+![prew2](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/prev3.png)
 
 # Karakterler
-![boss](https://github.com/metehansozenli/Javascript_Game/blob/main/boss.png)
+![boss](https://github.com/metehansozenliJavascript_Pixel_Dungeon_Wars_Game/blob/main/boss.png)
   
-![player](https://github.com/metehansozenli/Javascript_Game/blob/main/player.png)
+![player](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/player.png)
   
-![rat](https://github.com/metehansozenli/Javascript_Game/blob/main/rat.png)
+![rat](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/rat.png)
   
   
 # Oyun Linki ve Oynanış videosu
