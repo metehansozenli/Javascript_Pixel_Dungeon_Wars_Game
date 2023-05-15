@@ -9,6 +9,7 @@ Javascript dili ve yanında HTML- CSS kullanılarak nesneye yönemli programlama
 Pixel Dungeon Wars oyunu :
 - Klavyenin W A S D tuşları kullanılarak karakterimiz hareket ettirilir.
 - Mouse sol tıkı ile ateş etme özelliği vardır.
+- Mermi sınırsız değildir, belirli aralıklara dolmaktadır.
 - Oyundaki temel amacı fare ve Boss gibi düşmanları öldürerek görevi tamamlamak(Şimdilik sadece 1 görev vardır).
 
 Not: Düşmanlarla savaşırken zemindeki dikenlere uzak durmayı unutmayın.
