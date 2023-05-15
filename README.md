@@ -16,7 +16,7 @@ Not: Düşmanlarla savaşırken zemindeki dikenlere uzak durmayı unutmayın.
 
 # Oyun içi görseller
 Oyun içerisindeki Sıçan, Ana karakter, Boss ve oyun içi assetlerin çizimlerini ve animasyonlarını photoshop kullanarak kendim hazırladım.</br>
-Oyun içi mekan tasarmı arkadaşım Hilmi Difyeli tarafından hazırlanmıştır.
+Oyun içi mekan tasarımı arkadaşım Hilmi Difyeli tarafından hazırlanmıştır.
 
 ![prew](https://github.com/metehansozenli/Javascript_Pixel_Dungeon_Wars_Game/blob/main/prew.png)
 
