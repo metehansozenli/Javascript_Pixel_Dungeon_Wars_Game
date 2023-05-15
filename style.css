@@ -1,12 +1,92 @@
 body{
     background: rgb(2, 0, 7);
 }
-#canvas1 {
-    background:url(dungeon-preview_gif-animated.png);
+#mainMenu{
+    background:url("mainMenu.gif");
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 400px;
+}
+
+#howToPlay{
+    background:url("howtoplay.png");
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 650px;
+    height: 450px;
+    display: none;
+}
+
+#gameEnd{
+    color: beige;
+    background:#0c0f1e;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 400px;
+    display: none;
+}
+
+#button1{top: 80%;left: 25%;}
+#button2{top: 80%;left: 75%;}
+#button3{top: 0%;left: 0%;}
+#button4{top: 80%;left: 75%;}
+#button5{top: 80%;left: 25%;}
+
+.backButton{
+    color: beige;
+    text-align: center;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background:#171c34;
+}
+
+.menuButton{
+    font-size: 20px;
+    font-family: "Arial";
+    text-align: center;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 80px;
+    background:#171c34;
+}
+
+.menuButton p, .menuButton2 p{
+    color: beige;
+    text-align: center;
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.menuButton2,.backButton:hover{
+    background:#3b4161;
+    content: "Çok Yakıda...";
+}
+.menuButton:hover{
+    background:#3b4161;
+}
+
+#canvas1{
+    background:url(background.gif);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 1280px;
-    height: 720px;
+    height: 640px;
+}
+
+#enemy, #rats, #rats2, #spikes{
+    display: none;
 }
