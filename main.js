@@ -7,17 +7,26 @@ class Inputs{
     constructor(game){
         this.game = game;
         this.player = this.game.player;
+        //kullanicinin klavye hereketleri alınır ve tuşa göre yön belirlitilerek hareket saglanir
         window.addEventListener("keydown", (e) => {
-            if(e.code == 'KeyD')
+            if(e.code == 'KeyD'){
                 this.player.velocityXR = this.player.maxSpeed;
-            if(e.code == 'KeyA')
+                this.player.frameY = 0; 
+            }    
+            if(e.code == 'KeyA'){
                 this.player.velocityXL = -this.player.maxSpeed;
-            if(e.code == 'KeyW')
+                this.player.frameY = 1; 
+            }    
+            if(e.code == 'KeyW'){
                 this.player.velocityY = -this.player.maxSpeed;
-            if(e.code == 'KeyS')
+                this.player.frameY = 3; 
+            }    
+            if(e.code == 'KeyS'){
                 this.player.velocityY = this.player.maxSpeed;
+                this.player.frameY = 2; 
+            }    
             });
-            
+        //tusa basilmama durumu    
         window.addEventListener("keyup", (e) => {
             if(e.code == 'KeyD')
                 this.player.velocityXR=0;
@@ -35,7 +44,7 @@ class Inputs{
     }
 }
 
-class SpriteSheet{
+class SpriteSheet{//karakterlerin animasyonu icin bilgilerin tutuldugu class
     constructor(Id,spriteWidth,spriteHeight,maxFrame){
         this.frameX = 0;
         this.frameY = 0;
@@ -46,7 +55,7 @@ class SpriteSheet{
     }
 }
 
-class Projectiles{
+class Projectiles{//mermirler
     constructor(game,x,y,destX,destY,color,radius){
         this.game = game;
         this.x = x;
@@ -61,7 +70,9 @@ class Projectiles{
     update(){
         this.x += this.destX * this.velocity;
         this.y += this.destY * this.velocity;
-        if(this.x > this.game.width-30 || this.y > this.game.height-30 || this.x < 30 || this.y < 30) this.deletionStatus = true;
+        //mermir oyun alaninin disina cikarsa silinmesi icin kosul
+        if(this.x > this.game.width-30 || this.y > this.game.height-30 || this.x < 30 || this.y < 30) 
+            this.deletionStatus = true;
     }
     draw(context){
         context.beginPath();
@@ -73,34 +84,28 @@ class Projectiles{
 
 class Player extends SpriteSheet{
     constructor(game){
-        super('player',78,78,8);
+        super('player',33,64,4);
         this.game = game;
-        this.width = 50;
-        this.height = 50;
+        this.width = 33;
+        this.height = 64;
         this.x = 200;
         this.y = 200;
         this.velocityXL = 0;
         this.velocityXR = 0;
         this.velocityY = 0;
         this.maxSpeed = 3;
-        this.health = 10;
+        this.health = 15;
         this.projectiles = [];   
     }
     draw(context){
-        //const playerImg = new Image(); 
-        //playerImg.src = 'player1.png';
-        //context.drawImage(playerImg, this.x,this.y,128, 128);
-        context.fillStyle = 'blue';
-        context.fillRect(this.x,this.y,this.width,this.height);
-        context.fillStyle = "Blue";
-        context.font = "50px Arial";
-        context.fillText(this.health.toFixed(1),this.x+25,this.y);
+        context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,this.spriteHeight,this.x,this.y,this.width, this.height);
         this.projectiles.forEach(projectile => {
             projectile.draw(context);
         });
     }
     update(){
         
+        //oyunca hareketi
         this.x += this.velocityXR;
         this.x += this.velocityXL;
         this.y += this.velocityY;
@@ -140,20 +145,18 @@ class Enemy extends SpriteSheet{
         this.width = this.spriteWidth;
         this.height = this.spriteHeight;
         this.maxSpeed = 1;
-        this.health = 20;
+        this.health = 50;
         this.projectiles2 = [];
     }
     draw(context){
         context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,this.spriteHeight,this.x,this.y,this.width, this.height);
-        context.fillStyle = "Red";
-        context.font = "50px Arial";
-        context.fillText(this.health,this.x+25,this.y);
         this.projectiles2.forEach(projectile => {
             projectile.draw(context);
         });
         
     }
     moveEnemy() {
+        //dusmanin takip etmesi
         if (this.x < this.player.x) {
             this.x += this.maxSpeed;
             this.frameY=0;
@@ -179,6 +182,7 @@ class Enemy extends SpriteSheet{
         else if((this.y + 50)> this.game.height - this.height) this.y = this.game.height - this.height - 50;
     } 
     shoot(){
+        //düsmanin oyuncuya ates etmesi
         const angleEnemy = Math.atan2(this.game.player.y - this.y, this.game.player.x - this.x)
         this.projectiles2.push(new Projectiles(this.game, this.x, this.y, Math.cos(angleEnemy), Math.sin(angleEnemy),'#23b82d',8));
     }
@@ -208,10 +212,10 @@ class Rats extends SpriteSheet{
         this.deletionStatus = false;
     }
     draw(context){
-        console.log(this.x);
         context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth,this.spriteHeight,this.x,this.y,this.width, this.height);
     }
     update() {
+        //sicanlarin takip etmesi
         if (this.x < this.player.x) {
             this.x += this.maxSpeed;
             this.frameY=0;
@@ -244,6 +248,7 @@ class Spikes {
         this.image = document.getElementById('spikes');
         this.x = Math.random() * this.game.width - this.width;
         this.y = Math.random() * this.game.height + this.height;
+        //spawnlanilan noktanin yurunebilecek alanda olmasi
         this.x = (this.x < 55)? 58 : (this.x > this.game.width - this.width - 55)? this.game.width - this.width - 58 : this.x;
         this.y = (this.y < 185)? 185 : (this.y > this.game.height - this.height - 55)? this.game.height - this.height - 58 : this.y;
         this.damage = 0.1;
@@ -259,8 +264,8 @@ class Game{
         this.width = width;
         this.height = height;
         this.topMargin=105;
-        this.ammo = 20;
-        this.maxAmmo = 20;
+        this.ammo = 10;
+        this.maxAmmo = 6;
         this.ammoTimer = 0;// mermi reload etme sure sayaci
         this.enemyShootTimer = 0;// dusman ates etme sure sayaci
         this.enemyWTimer = 0;// dusman bekleme sayaci
@@ -273,18 +278,22 @@ class Game{
         this.player = new Player(this);
         this.inputs = new Inputs(this);
         this.enemy = new Enemy(this);
+        this.ammoIcon = document.getElementById("ammo");
+        this.enemyHeart = document.getElementById("eHeart");
+        this.playerHeart = document.getElementById("pHeart");
         this.rats = [];
         this.spikes = [];
-        this.spikeCount = Math.random()*4 + 1;
+        this.spikeCount = Math.random()*4 + 1;// dikenlerin sayisinin random belirlenmesi
     }
     update(deltaTime){
+        
         this.player.update();
         this.enemy.update();
         this.rats.forEach(rat => {
             rat.update();
         });
         this.rats = this.rats.filter(rat => !rat.deletionStatus);
-
+        //rastgele anda sican spawnlanmasi icin kosul
         var possibilty = Math.random();  
         if(possibilty < 0.001){
             this.spawnRats();
@@ -298,6 +307,7 @@ class Game{
                     rat.frameX++;
                 });
             }
+            //animasyonun basa donmesi icin gerekli kosullar
             if(this.enemy.frameX == this.enemy.maxFrame)
                 this.enemy.frameX = 0;
 
@@ -380,6 +390,20 @@ class Game{
                 this.player.health-=0.01;
         });
         
+        // Boss ve oyuncu canların oyun ekraninda gosterilmesi ve mermi sayisi
+        ctx.drawImage(this.playerHeart,1050,55,30,30);
+        ctx.fillStyle = "#ffe56d";
+        ctx.font = "20px Arial";
+        ctx.fillText(this.player.health.toFixed(1),1110,75);
+        ctx.drawImage(this.ammoIcon,1050,100,30,30);
+        ctx.fillStyle = "#ffe56d";
+        ctx.font = "20px Arial";
+        ctx.fillText(this.ammo,1110,120);
+        
+        ctx.drawImage(this.enemyHeart,80,55,30,30);
+        ctx.fillStyle = "#ffe56d";
+        ctx.font = "20px Arial";
+        ctx.fillText(this.enemy.health,140,75);
     }
     show(ctx){
         this.player.draw(ctx);
@@ -415,13 +439,15 @@ class Game{
             return (false); 
     }
     spawnRats(){
-        this.rats.push(new Rats(this,Math.random()*1100,Math.random()*600-120));
+        //random yerde spawnlanma
+        this.rats.push(new Rats(this,Math.random()*1100,Math.random()*600-this.topMargin));
     }
     spawnSpikes(){
         for(let i=0 ; i<=this.spikeCount ; i++)
             this.spikes.push(new Spikes(this));     
     }
 }
+
 var div;
 function startGame(){
     div = document.getElementById("mainMenu");
@@ -431,6 +457,7 @@ function startGame(){
     lastTime = 0;
     
     function animate(timeStamp){
+        
         if(game.enemy.health <= 0){
            gameEnd("player");
         }
@@ -456,15 +483,15 @@ function backToMenu(){
     div = document.getElementById("howToPlay");
     div.style.display = "none";
 }
-function gameEnd(winner){
+function gameEnd(winner){//bitisde gösterilecek ekran
     div = document.getElementById("gameEnd");
     div.style.display = "flex";
     if(winner == "player"){
-        div.style.background = "url('winScreen.gif')";
+        div.style.background = "url('assets/winScreen.gif')";
         div.style.backgroundSize = "cover";
     }
     else if (winner == "enemy"){
-        div.style.background = "url('deadScreen.gif')";
+        div.style.background = "url('assets/deadScreen.gif')";
         div.style.backgroundSize = "cover";
     }
 }

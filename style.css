@@ -2,7 +2,7 @@ body{
     background: rgb(2, 0, 7);
 }
 #mainMenu{
-    background:url("mainMenu.gif");
+    background:url("assets/mainMenu.gif");
     position: absolute;
     top: 50%;
     left: 50%;
@@ -12,7 +12,7 @@ body{
 }
 
 #howToPlay{
-    background:url("howtoplay.png");
+    background:url("assets/howtoplay.png");
     position: absolute;
     top: 50%;
     left: 50%;
@@ -78,7 +78,7 @@ body{
 }
 
 #canvas1{
-    background:url(background.gif);
+    background:url(assets/background.gif);
     position: absolute;
     top: 50%;
     left: 50%;
@@ -87,6 +87,6 @@ body{
     height: 640px;
 }
 
-#enemy, #rats, #rats2, #spikes{
+#enemy, #player, #rats, #rats2, #spikes, #eHeart, #pHeart, #ammo{
     display: none;
 }
